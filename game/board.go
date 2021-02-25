@@ -39,12 +39,11 @@ func (b *Board) setPreviousFields(field [][]int) {
 // Simulate Conway's Game of Life with dynamic ruleset
 func (b *Board) Simulate(t, viewedRadius int, ruleset func(Neighbours) int,
 	defaultStateWhenRuleNull int, typeIterationStack TypeIterationStack,
-	stopWhenNoChange bool /* , stopWhen func(int) bool */) [][]int {
+	stopWhenNoChange bool) [][]int {
 
 	if b.field == nil || len(b.field) < 1 || t < 1 {
 		return b.field
 	}
-	// var field [][]int = nil
 	var nField = linq.Copy2DimSliceByValue(b.field)
 	if typeIterationStack != 0 {
 		if typeIterationStack == 2 {
@@ -57,23 +56,13 @@ func (b *Board) Simulate(t, viewedRadius int, ruleset func(Neighbours) int,
 
 	for t > 0 {
 		t--
-		// if /*stopWhen() != null &&*/ linq.All(nField, stopWhen) {
-		// 	break
-		// }
 		field := linq.Copy2DimSliceByValue(nField)
 		if stopWhenNoChange {
 			b.setPreviousFields(field)
 		}
 		for i := 0; i < len(b.field); i++ {
 			for j := 0; j < len(b.field[i]); j++ {
-				// // cell := Cell{field[j][i], j, i}
-				// // nField[i][j] = ruleset(Cell{field[j][i], j, i}.Count(field, viewedRadius))
-				// n, _ := Cell{field[j][i], j, i}.Count(field, viewedRadius)
-				// nField[i][j] = ruleset(n)
-				// nField[i][j] = ruleset(Cell{field[j][i], j, i}.CountNeighbours(field, viewedRadius))
 				nField[i][j] = ruleset(Neighbours{radius: viewedRadius, c: Cell{field[i][j], j, i}}.Count(field))
-				// r := ruleset(Cell{field[j][i], j, i}.Count(field, viewedRadius))
-				// nField[i][j] = r
 			}
 		}
 		b.field = nField
