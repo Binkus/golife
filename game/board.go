@@ -1,6 +1,9 @@
 package game
 
-import "gameoflife/helper/linq"
+import (
+	"gameoflife/helper"
+	"gameoflife/helper/linq"
+)
 
 // Board type of Life
 type Board struct {
@@ -36,6 +39,15 @@ func (b *Board) setPreviousFields(field [][]int) {
 	b.prevBoard = field
 }
 
+// GenRandomCells :
+func (b *Board) GenRandomCells() {
+	for i := 0; i < len(b.field); i++ {
+		for j := 0; j < len(b.field[i]); j++ {
+			b.field[i][j] = helper.RandInt(0, 2)
+		}
+	}
+}
+
 // Simulate Conway's Game of Life with dynamic ruleset
 func (b *Board) Simulate(t, viewedRadius int, ruleset func(Neighbours) int,
 	defaultStateWhenRuleNull int, typeIterationStack TypeIterationStack,
@@ -54,8 +66,7 @@ func (b *Board) Simulate(t, viewedRadius int, ruleset func(Neighbours) int,
 		}
 	}
 
-	for t > 0 {
-		t--
+	for ; t > 0; t-- {
 		field := linq.Copy2DimSliceByValue(nField)
 		if stopWhenNoChange {
 			b.setPreviousFields(field)

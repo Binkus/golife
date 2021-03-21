@@ -1,3 +1,4 @@
+// Package linq helper functions
 package linq
 
 // Copy2DimSliceByValue :
@@ -19,7 +20,7 @@ func All(matrix [][]int, f func(int) bool) bool {
 			}
 		}
 	}
-	return matrix != nil && len(matrix) > 0
+	return len(matrix) > 0
 }
 
 // Any :

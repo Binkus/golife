@@ -1,3 +1,4 @@
+// Package game Game of Life
 package game
 
 import (
@@ -7,6 +8,9 @@ import (
 // Start game
 func Start(height, width int) {
 	b := CreateBoard(height, width)
+
+	b.GenRandomCells()
+
 	b.field[5][4] = Alive
 	b.field[5][5] = Alive
 	b.field[5][6] = Alive
@@ -62,10 +66,8 @@ func OutputTextField(field [][]int, enableUnnecessaryHashes bool) (s string) {
 			switch field[i][j] {
 			case 1:
 				toprintchar = AliveCell
-				break
 			case -1:
 				toprintchar = DeadCell
-				break
 			}
 			s += string(toprintchar)
 		}
